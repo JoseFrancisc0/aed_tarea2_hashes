@@ -66,7 +66,7 @@ class LinkedList{
         void set_at(T _data, int pos){                               // set_at()
             Nodo* temp = head;                              // Node.later_node()
             for(int i=0; i<=pos; i++)
-                temp = temp->next
+                temp = temp->next;
             
             temp->data = _data;
         }
@@ -98,7 +98,7 @@ class LinkedList{
 
             Nodo* temp = head;                              // Node.later_node()
             while(temp->next)
-                temp = temp->next
+                temp = temp->next;
             
             temp->next = nodo;
             nodo->next = nullptr;
