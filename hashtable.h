@@ -1,9 +1,7 @@
 #ifndef SEMANA_2_HASH_TABLE_H
 #define SEMANA_2_HASH_TABLE_H
 #include <cstdlib>
-#include <cmath>
 #include <vector>
-#include <iostream>
 using namespace std;
 #include "linkedlist.h"
 
@@ -31,7 +29,7 @@ public:
         delete chain_set;
         delete A;
     }
-    int size() const {
+    T size() const {
         return size;
     }
 
@@ -39,6 +37,12 @@ public:
         for (const auto& x : X) {
             insert(x);
         }
+    }
+
+    const T* find(const T& k) {
+        int h = _hash(k.key, A->getSize());
+        A->find(k);
+        return A->find(k);
     }
 
     void insert(const T& x) {   // ????? esta bien
@@ -49,6 +53,71 @@ public:
             size_++;
         }
     }
+
+    void remove(const T& k) {  // ????? esta bien
+        assert(size_ > 0);
+
+        int h = _hash(k.key, A->size());
+        bool removed = A->remove(k);
+
+        if (removed) {
+            size_--;
+            _resize(size_);
+        }
+    }
+
+    T* find_min(){
+        T* out = nullptr;
+        for (const auto& x : *A) {
+            if (!out or (x.key < out->key)) {
+                out = &x;
+            }
+        }
+        return *out;
+    }
+
+    T* find_max(){
+        T* out = nullptr;
+        for (const auto& x : *A) {
+            if (!out or (x.key > out->key)) {
+                out =&x;
+            }
+        }
+        return *out;
+    }
+
+    T* find_next(int k){
+        T* out = nullptr;
+        for (const auto& x : *A) {
+            if (x.key > k) {
+                if (!out or (x.key < out->key)) {
+                    out = &x;
+                }
+            }
+        }
+        return *out;
+    }
+
+    T* find_prev(int k){
+        T* out = nullptr;
+        for (const auto& x : *A) {
+            if (x.key < k) {
+                if (!out or (x.key > out->key)) {
+                    out = &x;
+                }
+            }
+        }
+        return *out;
+    }
+
+    void iter_order() {
+        T* x = &find_min();
+        while (x) {
+            x = &find_next(x->key);
+        }
+    }
+
+
 private:
     LinkedList<T>* chain_set;
     LinkedList<T>* A;
@@ -56,14 +125,16 @@ private:
     int r;
     int p;
     int a;
+    int upper;
+    int lower;
 
     int _hash(int k, int m) {
         return ((a * k) % p) % m;
     }
 
     void _compute_bounds() {
-        upper = A->size();
-        lower = A->size() * 100 * 100 ;
+        this->upper = A->size();
+        this->lower = A->size() * 100 * 100 ;
     }
 
     void _resize(int n) {
@@ -84,9 +155,8 @@ private:
         }
     }
 
-    int upper;
-    int lower;
-
 };
+
+
 
 #endif //SEMANA_2_HASH_TABLE_H
