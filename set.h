@@ -25,7 +25,10 @@ class Set{
             return removed;
         };
 
-        bool contains(T data);
+        bool contains(T data){
+            return table.find(data);
+        }
+        
         Set Union(const Set& other);
         Set Intersect(const Set& other);
         Set Difference(const Set& other);
