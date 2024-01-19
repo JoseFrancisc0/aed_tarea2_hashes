@@ -28,8 +28,19 @@ class Set{
         bool contains(T data){
             return table.find(data);
         }
-        
-        Set Union(const Set& other);
+
+        Set<T> Union(const Set& other){
+            Set<T> newSet;
+
+            for(const T& element : table)
+                newSet.insert(element);
+            
+            for(const T& element : other.table)
+                newSet.insert(element);
+            
+            return newSet;
+        }
+
         Set Intersect(const Set& other);
         Set Difference(const Set& other);
         ~Set(){};                           // Llama al destructor de Hashtable
