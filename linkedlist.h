@@ -177,7 +177,7 @@ class LinkedList{
         }
 
         bool find(T key){
-            Node* temp = head;
+            Nodo* temp = head;
             while(temp){
                 if(temp->data == key)
                     return true;
