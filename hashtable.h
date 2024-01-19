@@ -16,6 +16,7 @@ using namespace std;
     la tabla hash.
 */
 
+/*
 template<typename T>
 class Hash_Table_Set{
 public:
@@ -156,7 +157,94 @@ private:
     }
 
 };
+*/
 
+template<typename T = int>
+class HashTable{
+    private:
+        LinkedList<T>* A;
+        int size = 0;
+        int capacity;
+        int fill_ratio;
+        int p = 2147483647;
+        int a = rand() % (p - 1) + 1;
+        int upper_bound;
+        int lower_bound;
 
+        int hash(T key){
+            int _hash = ((a*key) % p) % capacity;
+            return _hash;
+        }
+
+        void compute_bounds(){
+            upper_bound = A->get_size();
+            lower_bound = A->get_size()*100*100 / (fill_ratio*fill_ratio);
+        }
+
+        void resize(int n){
+            if(n <= lower_bound || n >= upper_bound){
+                int f = fill_ratio/100;
+                if(fill_ratio % 100 != 0)
+                    f++;
+                
+                int m = max(n, 1) * f;
+                LinkedList<T>* newA = new LinkedList<T>[m];
+                for(int i=0; i<size; ++i){
+                    LinkedList<T>& current = A[i];
+                    auto it = current.begin();
+                    while(it != current.end()){
+                        T element = *it;
+                        int _hash = hash(element);
+                        newA[_hash].push_back(element);
+                        ++it;
+                    }
+                }
+
+                delete[] A;
+                A = newA;
+                capacity = m;
+
+                compute_bounds();
+            } 
+        }
+    
+    public:
+        HashTable(int _capacity = 1, int _fill_ratio = 200): capacity(_capacity), fill_ratio(_fill_ratio){
+            A = new LinkedList<T>[capacity];
+            compute_bounds();
+        }
+
+        int get_size(){
+            return size;
+        }
+
+        void insert(const T& key){              // push_back() es void
+            resize(size + 1); // Check
+            int _hash = hash(key);
+            A[_hash].push_back(key);            // Al no devolver, los checks se hacen dentro LinkedList::push_back()
+            size++;
+        }
+
+        bool find(T key){
+            int _hash = hash(key);
+            return A[_hash].find(key);
+        }
+
+        bool remove(const T& key){
+            int _hash = hash(key);
+            bool deleted = A[_hash].erase_key(key);
+
+            if(deleted){
+                size--;
+                resize(size);
+            }
+
+            return deleted;
+        }
+
+        ~HashTable(){
+            delete[] A;
+        }
+};
 
 #endif //SEMANA_2_HASH_TABLE_H

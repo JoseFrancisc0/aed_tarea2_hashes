@@ -135,7 +135,7 @@ class LinkedList{
             }
         }
 
-        T erase(int pos){                                   // delete_at()
+        T erase_position(int pos){                                   // delete_at()
             if(i == 0)
                 pop_front();
             else if(i == size-1)
@@ -152,6 +152,39 @@ class LinkedList{
 
                 return popped;
             }
+        }
+
+        bool erase_key(T key){
+            Nodo* current = head;
+            Nodo* prev = nullptr;
+
+            while(current){
+                if(current->data == key){
+                    if(prev)
+                        prev->next = current->next;
+                    else
+                        head = current->next;
+
+                    delete current;
+                    return true;
+                }
+
+                prev = current;
+                current = current->next;
+            }
+
+            return false;
+        }
+
+        bool find(T key){
+            Node* temp = head;
+            while(temp){
+                if(temp->data == key)
+                    return true;
+                temp = temp->next; 
+            }
+
+            return false;
         }
 
         ~LinkedList(){
