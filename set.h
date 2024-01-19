@@ -1,19 +1,23 @@
 #ifndef SEMANA_2_SET_H
 #define SEMANA_2_SET_H
 
+#include "hashtable.h"
+using namespace std;
+
 template<typename T>
 class Set{
     private:
-        // TODO: members
+        HashTable<T> table;
+        int size = 0;
     public:
-        Set();
+        Set(){};                            // Llama al constructor de HashTable
         void insert(T data);
         bool remove(T data);
         bool contains(T data);
         Set Union(const Set& other);
         Set Intersect(const Set& other);
         Set Difference(const Set& other);
-        ~Set();
+        ~Set(){};                           // Llama al destructor de Hashtable
 };
 
 #endif //SEMANA_2_SET_H
