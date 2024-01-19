@@ -41,29 +41,30 @@ public:
 
     const T* find(const T& k) {
         int h = _hash(k.key, A->getSize());
-        A->find(k);
-        return A->find(k);
+        return A[h]->find(k);
     }
 
-    void insert(const T& x) {   // ????? esta bien
+    bool insert(const T& x) {   // Creo q ya esta bien
         _resize(size_ + 1);
         int h = _hash(x.key, A->size());
-        bool added = A->insert(x);
+        bool added = A[h]->insert(x);
         if (added) {
             size_++;
         }
+        return added;
     }
 
-    void remove(const T& k) {  // ????? esta bien
+    bool remove(const T& k) {  // ????? esta bien
         assert(size_ > 0);
 
         int h = _hash(k.key, A->size());
-        bool removed = A->remove(k);
+        bool removed = A[h]->remove(k);
 
         if (removed) {
             size_--;
             _resize(size_);
         }
+        return removed;
     }
 
     T* find_min(){
@@ -134,7 +135,7 @@ private:
 
     void _compute_bounds() {
         this->upper = A->size();
-        this->lower = A->size() * 100 * 100 ;
+        this->lower = (A->size() * 100 * 100)/(r*r) ;
     }
 
     void _resize(int n) {
