@@ -11,8 +11,20 @@ class Set{
         int size = 0;
     public:
         Set(){};                            // Llama al constructor de HashTable
-        void insert(T data);
-        bool remove(T data);
+
+        void insert(T data){
+            table.insert(data);
+            size = table.get_size();
+        }
+
+        bool remove(T data){
+            bool removed = table.remove(data);
+            if(removed)
+                size = table.get_size();
+            
+            return removed;
+        };
+
         bool contains(T data);
         Set Union(const Set& other);
         Set Intersect(const Set& other);
