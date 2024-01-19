@@ -242,6 +242,50 @@ class HashTable{
             return deleted;
         }
 
+        T find_min(){
+            T min_key = numeric_limits<T>::max();
+
+            for(int i=0; i<capacity; ++i)
+                for(const T& element : A[i])
+                    if(element < min_key)
+                        min_key = element;
+            
+            return min_key;
+        }
+
+        T find_max(){
+            T max_key = 0;
+
+            for(int i=0; i<capacity; ++i)
+                for(const T& element : A[i])
+                    if(element > max_key)
+                        max_key = element;
+            
+            return max_key;
+        }
+
+        T find_next(T key){
+            T next = numeric_limits<T>::max();
+
+            for(int i=0; i<capacity; ++i)
+                for(const T& element : A[i])
+                    if(element > key && element < next)
+                        next = element;
+            
+            return next;
+        }
+
+        T find_prev(T key){
+            T prev = numeric_limits<T>::min();
+
+            for(int i=0; i<capacity; ++i)
+                for(const T& element : A[i])
+                    if(element < key && element > prev)
+                        prev = element;
+            
+            return prev;
+        }
+
         ~HashTable(){
             delete[] A;
         }
