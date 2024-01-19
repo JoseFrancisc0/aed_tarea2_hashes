@@ -65,6 +65,36 @@ class HashTable{
         }
     
     public:
+
+        class iterator{
+            private:
+                typename LinkedList<T>::iterator current;
+            
+            public:
+                iterator(typename LinkedList<T>::iterator start) : current(start){};
+
+                T operator*(){
+                    return *current;
+                }
+
+                iterator& operator++(){
+                    ++current;
+                    return *this;
+                }
+
+                bool operator!=(const iterator& other){
+                    return current != other.current;
+                }
+        };
+
+        iterator begin(){
+            return iterator(A[0].begin());
+        }
+
+        iterator end(){
+            return iterator(A[capacity - 1].end());
+        }
+
         HashTable(int _capacity = 1, int _fill_ratio = 200): capacity(_capacity), fill_ratio(_fill_ratio){
             A = new LinkedList<T>[capacity];
             compute_bounds();
