@@ -41,8 +41,26 @@ class Set{
             return newSet;
         }
 
-        Set Intersect(const Set& other);
-        Set Difference(const Set& other);
+        Set Intersect(const Set& other){
+            Set<T> newSet;
+
+            for(const T& element : table)
+                if(other.contains(element))
+                    newSet.insert(element);
+                
+            return newSet;
+        };
+
+        Set Difference(const Set& other){
+            Set<T> newSet;
+
+            for(const T& element : table)
+                if(!other.contains(element))
+                    newSet.insert(element);
+                
+            return newSet;
+        }
+
         ~Set(){};                           // Llama al destructor de Hashtable
 };
 
