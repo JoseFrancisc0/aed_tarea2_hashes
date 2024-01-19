@@ -20,13 +20,11 @@ template<typename T>
 class Hash_Table_Set{
 public:
     Hash_Table_Set(int r = 200) : r(r), p(2147483647), a(rand() % (p - 1) + 1) {
-        chain_set = new LinkedList<T>();
         A = new LinkedList<T>();
         _compute_bounds();
         _resize(0);
     }
     ~Hash_Table_Set() {
-        delete chain_set;
         delete A;
     }
     T size() const {
@@ -40,13 +38,13 @@ public:
     }
 
     const T* find(const T& k) {
-        int h = _hash(k.key, A->getSize());
+        int h = _hash(k, A->getSize());
         return A[h]->find(k);
     }
 
     bool insert(const T& x) {   // Creo q ya esta bien
         _resize(size_ + 1);
-        int h = _hash(x.key, A->size());
+        int h = _hash(x, A->size());
         bool added = A[h]->insert(x);
         if (added) {
             size_++;
@@ -120,7 +118,6 @@ public:
 
 
 private:
-    LinkedList<T>* chain_set;
     LinkedList<T>* A;
     int size_ = 0;
     int r;
@@ -139,17 +136,19 @@ private:
     }
 
     void _resize(int n) {
-        if (lower >= n or n >= upper) {
+        if (lower >= n || n >= upper) {
             int f = r / 100;
             if (r % 100) {
                 f += 1;
             }
             int m = max(n, 1) * f;
             LinkedList<T>* newA = new LinkedList<T>[m];
-            for (const auto& x : *A) {
-                int h = _hash(x.key, m);
+
+            for (const T& x : *A) {
+                int h = _hash(x, m);
                 newA[h].insert(x);
             }
+            
             delete[] A;
             A = newA;
             _compute_bounds();
