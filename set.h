@@ -29,33 +29,33 @@ class Set{
             return table.find(data);
         }
 
-        Set<T> Union(const Set& other){
+        Set<T> Union(Set other){
             Set<T> newSet;
 
-            for(const T& element : table)
+            for(T element : table)
                 newSet.insert(element);
             
-            for(const T& element : other.table)
+            for(T element : other.table)
                 newSet.insert(element);
             
             return newSet;
         }
 
-        Set Intersect(const Set& other){
+        Set Intersect(Set other){
             Set<T> newSet;
 
-            for(const T& element : table)
-                if(other.contains(element))
+            for(T element : table)
+                if(other.contains(element) == true)
                     newSet.insert(element);
                 
             return newSet;
         };
 
-        Set Difference(const Set& other){
+        Set Difference(Set other){
             Set<T> newSet;
 
-            for(const T& element : table)
-                if(!other.contains(element))
+            for(T element : table)
+                if(other.contains(element) == false)
                     newSet.insert(element);
                 
             return newSet;
